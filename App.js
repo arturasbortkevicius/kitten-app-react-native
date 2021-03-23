@@ -1,21 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Navigation } from "./src/navigation/Navigation";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import { getKittenReducer } from "./src/store/reducers/index";
+import { useNetInfo } from "@react-native-community/netinfo";
+
+const store = createStore(getKittenReducer);
 
 export default function App() {
+  const netInfo = useNetInfo();
+  if (netInfo.isConnected === false) {
+    alert("Couldn't connect to the internet");
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <Navigation></Navigation>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
